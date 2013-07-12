@@ -46,6 +46,9 @@
     <Compile Include="Ktm\NativeMethods.cs" />
     <Compile Include="Ktm\TransactedDirectory.cs" />
     <Compile Include="Ktm\TransactedFile.cs" />
+    <Compile Include="TransactedStreamDecorator.cs" />
+    <Compile Include="TxFContentReader.cs" />
+    <Compile Include="TxFContentWriter.cs" />
     <Compile Include="TxFDrive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TxFProvider.cs" />

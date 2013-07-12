@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management.Automation.Provider;
+using CodeOwls.PowerShell.Paths;
 using CodeOwls.PowerShell.Provider.PathNodeProcessors;
 using CodeOwls.PowerShell.Provider.PathNodes;
+using Microsoft.KtmIntegration;
 
 namespace CodeOwls.TxF
 {
-    public class TxFNodeFactory : NodeFactoryBase, INewItem, IRemoveItem
+    public class TxFNodeFactory : NodeFactoryBase, INewItem, IRemoveItem, ISetItemContent, IGetItemContent
     {
         private readonly FileSystemInfo _fileSystemInfo;
         private readonly IPathNode _node;
@@ -116,6 +119,44 @@ namespace CodeOwls.TxF
             {
                 Microsoft.KtmIntegration.TransactedFile.Delete(fi.FullName);
             }
+        }
+
+        public IContentWriter GetContentWriter(IContext context)
+        {
+            Stream stream;
+            if (context.TransactionAvailable())
+            {
+                stream = TransactedFile.Open(_fileSystemInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.None);
+            }
+            else
+            {
+                stream = File.Open(_fileSystemInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.None);
+            }
+            return new TxFContentWriter(stream);
+        }
+
+        public object GetContentWriterDynamicParameters(IContext context)
+        {
+            return null;
+        }
+
+        public IContentReader GetContentReader(IContext context)
+        {
+            Stream stream;
+            if (context.TransactionAvailable())
+            {
+                stream = TransactedFile.Open(_fileSystemInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.None);
+            }
+            else
+            {
+                stream = File.Open(_fileSystemInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            }
+            return new TxFContentReader(stream);
+        }
+
+        public object GetContentReaderDynamicParameters(IContext context)
+        {
+            return null;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Management.Automation;
 using System.Management.Automation.Provider;
 using CodeOwls.PowerShell.Paths.Processors;
 using CodeOwls.PowerShell.Provider;
@@ -15,6 +16,24 @@ namespace CodeOwls.TxF
             get { return new TxFPathNodeProcessor(); }
         }
 
+        protected override System.Collections.ObjectModel.Collection<System.Management.Automation.PSDriveInfo> InitializeDefaultDrives()
+        {
+            var drives = new System.Collections.ObjectModel.Collection<System.Management.Automation.PSDriveInfo>();
+            var fileSystemDrives = this.SessionState.Drive.GetAllForProvider("FileSystem");
+            foreach (var fileSystemDrive in fileSystemDrives)
+            {
+                var driveInfo = new PSDriveInfo( 
+                    "X" + fileSystemDrive.Name,
+                    this.ProviderInfo,
+                    fileSystemDrive.Root,
+                    "TxF for drive " + fileSystemDrive.Name,
+                    null);
+
+                var drive = new TxFDrive(driveInfo);
+                drives.Add(drive);
+            }
+            return drives;
+        }
         protected override System.Management.Automation.PSDriveInfo NewDrive(System.Management.Automation.PSDriveInfo drive)
         {
             var rootPath = drive.Root;

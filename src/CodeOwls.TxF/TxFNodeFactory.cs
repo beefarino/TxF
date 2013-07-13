@@ -41,13 +41,21 @@ namespace CodeOwls.TxF
             }
 
             var entries = dirInfo.GetFilesTransacted().ToList();
-            entries.Take(2).ToList().ForEach( e =>
+            entries.Take(2).ToList().ForEach(e =>
                 {
                     if (e.ToString().EndsWith("\\.") || e.ToString().EndsWith("\\.."))
                     {
                         entries.Remove(e);
                     }
-                } );
+                });
+            entries.ToList().ForEach(e =>
+                {
+                    if (!context.Force && 0 != (e.Attributes & (FileAttributes.System | FileAttributes.Hidden)))
+                    {
+                        entries.Remove(e);
+                    }
+
+                });
             return entries.ConvertAll(fsi => new TxFNodeFactory(fsi)).Cast<INodeFactory>();
         }
 
@@ -63,7 +71,7 @@ namespace CodeOwls.TxF
 
         public IEnumerable<string> NewItemTypeNames
         {
-            get { return new[] {"file", "folder"}; }
+            get { return new[] {"file", "folder", "directory"}; }
         }
 
         public object NewItemParameters { get; private set; }
@@ -98,6 +106,7 @@ namespace CodeOwls.TxF
                         }
                     }
                 case ("folder"):
+                case("directory"):
                     {
                         if (Microsoft.KtmIntegration.TransactedDirectory.CreateDirectory(newItemPath))
                         {

@@ -22,6 +22,7 @@ namespace Microsoft.KtmIntegration
             {
                 string dirSpec = System.IO.Path.Combine(path, searchPattern);
                 List<FileSystemInfo> files = new List<FileSystemInfo>();
+                List<FileSystemInfo> directories = new List<FileSystemInfo>();
 
                 NativeMethods.WIN32_FIND_DATA findFileData = new NativeMethods.WIN32_FIND_DATA();
                 SafeFileHandle hFind = FindFirstFileTransacted(dirSpec, ktmTx, out findFileData);
@@ -34,13 +35,14 @@ namespace Microsoft.KtmIntegration
                         var fullPath = Path.Combine(path, findFileData.cFileName);
                         if (0x10 == (0x10 & findFileData.dwFileAttributes))
                         {
-                            files.Add(new DirectoryInfo(fullPath));
+                            directories.Add(new DirectoryInfo(fullPath));
                         }
                         else
                         {
                             files.Add(new FileInfo(fullPath));
                         }
-                    } while (NativeMethods.FindNextFile(hFind, out findFileData));
+                    } 
+                    while (NativeMethods.FindNextFile(hFind, out findFileData));
                     int error = Marshal.GetLastWin32Error();
 
                     if (error != NativeMethods.ERROR_NO_MORE_FILES)
@@ -49,7 +51,8 @@ namespace Microsoft.KtmIntegration
                     }
 
                     scope.Complete();
-                    return files.ToArray();
+                    directories.AddRange(files);
+                    return directories.ToArray();
                 }
                 finally
                 {

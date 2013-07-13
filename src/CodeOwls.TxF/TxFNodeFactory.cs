@@ -40,7 +40,15 @@ namespace CodeOwls.TxF
                 return null;
             }
 
-            return dirInfo.GetFilesTransacted().ToList().ConvertAll(fsi => new TxFNodeFactory(fsi)).Cast<INodeFactory>();
+            var entries = dirInfo.GetFilesTransacted().ToList();
+            entries.Take(2).ToList().ForEach( e =>
+                {
+                    if (e.ToString().EndsWith("\\.") || e.ToString().EndsWith("\\.."))
+                    {
+                        entries.Remove(e);
+                    }
+                } );
+            return entries.ConvertAll(fsi => new TxFNodeFactory(fsi)).Cast<INodeFactory>();
         }
 
         public override IPathNode GetNodeValue()

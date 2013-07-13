@@ -28,14 +28,14 @@ namespace CodeOwls.TxF
 
         public IList Write(IList content)
         {
-            using (var scope = new TransactionScope())
+            //using (var scope = new TransactionScope())
             {
                 foreach (var item in content)
                 {
                     _writer.Write(item.ToString());
                 }
                 _writer.Flush();
-                scope.Complete();
+            //    scope.Complete();
             }
 
             return content;
@@ -49,12 +49,12 @@ namespace CodeOwls.TxF
 
         public void Close()
         {
-            using (var scope = new TransactionScope())
+            //using (var scope = new TransactionScope())
             {
                 _writer.Close();
                 _stream.Close();
                 
-                scope.Complete();
+            //    scope.Complete();
             }
         }
     }

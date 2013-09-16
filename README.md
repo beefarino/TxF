@@ -10,14 +10,13 @@ At the moment, the following standard provider cmdlets support transactional ope
 *   remove-item
 *   get-item
 *   get-childitem
+*   set-content
+*   get-content
 
 ## Planned Support
 
 The following standard provider cmdlets are planned to support transaction operations in the TxF Provider:
 
-*   get-content
-*   set-content
-*   rename-item
 *   move-item
 *   copy-item
 
@@ -25,15 +24,11 @@ The following standard provider cmdlets are planned to support transaction opera
 
 	> import-module txf
 	
-	> # define a new drive based on the TxF PowerShell Provider.
-	> # note the root of the drive points to an existing file system path	
-	> new-psdrive cx -psp txf -root c:\
-
-	WARNING: column "CurrentLocation" does not fit into the display and was removed.
-	
-	Name           Used (GB)     Free (GB) Provider      Root
-	----           ---------     --------- --------      ----
-	cx                                     TxF           c:\
+	> # the TxF module automatically defines new drives that correspond 
+	> # to each filesystem drive avaiable in your session.
+    > # these drives are named after their non-transactional filesystem drives,
+    > # prefaced with an 'x'.
+    > # for instance, the XC: drive represents the transaction-enabled C: drive.
 	
 	> # start a new transaction	
 	> start-transaction
@@ -71,7 +66,10 @@ The following standard provider cmdlets are planned to support transaction opera
 	----                -------------     ------ ----
 	darhs        12/31/1600   7:00 PM            data.txt
 	
-	> # complete the transaction
+	> # update the file content as part of the current transaction
+	> set-content cx:\share\data.txt -value 'this will be the new content of the file' -usetransaction
+	
+    > # complete the transaction
 	> Complete-Transaction
 	
 	> # now the file exists outside of the transactional scope
@@ -84,3 +82,8 @@ The following standard provider cmdlets are planned to support transaction opera
 	Mode                LastWriteTime     Length Name
 	----                -------------     ------ ----
 	-a---         6/22/2013   8:03 PM          7 data.txt
+
+    > # the file content persists past the current transaction
+	> get-content cx:\share\data.txt 
+    this will be the new content of the file
+	

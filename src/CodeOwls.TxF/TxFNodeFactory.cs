@@ -50,7 +50,7 @@ namespace CodeOwls.TxF
                 });
             entries.ToList().ForEach(e =>
                 {
-                    if (!context.Force && 0 != (e.Attributes & (FileAttributes.System | FileAttributes.Hidden)))
+                    if ((!context.TransactionAvailable() || -1 != (int)e.Attributes) && !context.Force && 0 != (e.Attributes & (FileAttributes.System | FileAttributes.Hidden)))
                     {
                         entries.Remove(e);
                     }
@@ -92,18 +92,21 @@ namespace CodeOwls.TxF
                     {
                         using (
                             var fs = Microsoft.KtmIntegration.TransactedFile.Open(newItemPath, FileMode.Create,
-                                                                                  FileAccess.ReadWrite, FileShare.None))
+                                                                                  FileAccess.ReadWrite,
+                                                                                  FileShare.ReadWrite))
                         {
                             newItem = new FileInfo(newItemPath);
-                            if (null != newItemValue)
+                        }
+                        if (null != newItemValue)
                             {
-                                using (var writer = new StreamWriter(fs))
+                                using (var writer = GetContentWriter(context, newItem.FullName))
                                 {
-                                    writer.Write(newItemValue.ToString());
+                                    var list = new string[] {newItemValue.ToString()}.ToList();
+                                    writer.Write(list);
                                 }
                             }
                             break;
-                        }
+                        
                     }
                 case ("folder"):
                 case("directory"):
@@ -140,14 +143,19 @@ namespace CodeOwls.TxF
 
         public IContentWriter GetContentWriter(IContext context)
         {
+            return GetContentWriter(context, _fileSystemInfo.FullName);
+        }
+
+        IContentWriter GetContentWriter(IContext context, string fullPath)
+        {
             Stream stream;
             if (context.TransactionAvailable())
             {
-                stream = TransactedFile.Open(_fileSystemInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.None);
+                stream = TransactedFile.Open(fullPath, FileMode.Open, FileAccess.Write, FileShare.None);
             }
             else
             {
-                stream = File.Open(_fileSystemInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.None);
+                stream = File.Open(fullPath, FileMode.Open, FileAccess.Write, FileShare.None);
             }
             return new TxFContentWriter(stream);
         }

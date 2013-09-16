@@ -23,7 +23,7 @@ namespace CodeOwls.TxF
         public void Dispose()
         {
             _stream.Dispose();
-            _writer.Dispose();
+            //_writer.Dispose();
         }
 
         public IList Write(IList content)

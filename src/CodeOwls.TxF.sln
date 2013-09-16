@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeOwls.PowerShell.Paths",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeOwls.PowerShell.Provider", "CodeOwls.PowerShell\CodeOwls.PowerShell.Provider\CodeOwls.PowerShell.Provider.csproj", "{B352375B-7C58-4943-95C0-14871E17A208}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeOwls.Txf.Tests", "CodeOwls.Txf.Tests\CodeOwls.Txf.Tests.csproj", "{36DAB6F1-E1EE-4096-9578-DD684A324055}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{B352375B-7C58-4943-95C0-14871E17A208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B352375B-7C58-4943-95C0-14871E17A208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B352375B-7C58-4943-95C0-14871E17A208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36DAB6F1-E1EE-4096-9578-DD684A324055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36DAB6F1-E1EE-4096-9578-DD684A324055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36DAB6F1-E1EE-4096-9578-DD684A324055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36DAB6F1-E1EE-4096-9578-DD684A324055}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

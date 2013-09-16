@@ -98,14 +98,14 @@ namespace CodeOwls.TxF
                             newItem = new FileInfo(newItemPath);
                         }
                         if (null != newItemValue)
+                        {
+                            using (var writer = GetContentWriter(context, newItem.FullName))
                             {
-                                using (var writer = GetContentWriter(context, newItem.FullName))
-                                {
-                                    var list = new string[] {newItemValue.ToString()}.ToList();
-                                    writer.Write(list);
-                                }
+                                var list = new string[] {newItemValue.ToString()}.ToList();
+                                writer.Write(list);
                             }
-                            break;
+                        }
+                        break;
                         
                     }
                 case ("folder"):

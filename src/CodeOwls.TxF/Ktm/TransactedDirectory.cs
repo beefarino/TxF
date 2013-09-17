@@ -28,7 +28,6 @@ namespace Microsoft.KtmIntegration
                 SafeFileHandle hFind = FindFirstFileTransacted(dirSpec, ktmTx, out findFileData);
                 try
                 {
-                    
                     // List all the other files in the directory.
                     do
                     {
@@ -39,7 +38,12 @@ namespace Microsoft.KtmIntegration
                         }
                         else
                         {
-                            files.Add(new FileInfo(fullPath));
+                            var fileInfo = new FileInfo(fullPath);
+                            fileInfo.CreationTime = findFileData.ftCreationTime.ToDateTime();
+                            fileInfo.LastAccessTime = findFileData.ftLastAccessTime.ToDateTime();
+                            fileInfo.LastWriteTime = findFileData.ftLastWriteTime.ToDateTime();                            
+                            
+                            files.Add(fileInfo);
                         }
                     } 
                     while (NativeMethods.FindNextFile(hFind, out findFileData));

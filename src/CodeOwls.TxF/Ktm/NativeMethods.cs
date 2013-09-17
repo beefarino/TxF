@@ -122,10 +122,31 @@ namespace Microsoft.KtmIntegration
             FindExSearchLimitToDevices,
             FindExSearchMaxSearchOp
         }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        internal struct SYSTEMTIME
+        {
+            public short wYear;
+            public short wMonth;
+            public short wDayOfWeek;
+            public short wDay;
+            public short wHour;
+            public short wMinute;
+            public short wSecond;
+            public short wMilliseconds;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         internal struct FILETIME
         {
             public uint DateTimeLow;
             public uint DateTimeHigh;
+
+            public DateTime ToDateTime()
+            {
+                long hFT2 = (((long) DateTimeHigh) << 32) | ((uint) DateTimeLow);
+                return DateTime.FromFileTime(hFT2);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -198,6 +219,12 @@ namespace Microsoft.KtmIntegration
             [In] SafeFileHandle hFindFile,
             [Out] out WIN32_FIND_DATA lpFindFileData);
 
+        [DllImport(KERNEL32, CharSet = CharSet.Unicode, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool FileTimeToSystemTime(
+            [In] ref NativeMethods.FILETIME fileTime,
+            [Out] out SYSTEMTIME systemTime);
+        
         //
         // Transacted file operations
         //

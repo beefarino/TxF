@@ -1,0 +1,67 @@
+﻿TOPIC
+    about_TxF
+
+COPYRIGHT
+   Copyright (c) 2014 Code Owls LLC
+    
+   For more information see about_TxF_License
+   
+SHORT DESCRIPTION
+    Provides access to transactional file system features from PowerShell.
+
+LONG DESCRIPTION
+    The TxF module allows you to execute transactional file system operations
+    using standard powershell provider cmdlets.
+
+SUPPORTED TRANSACTIONAL OPERATIONS
+    The following cmdlets are currently implemented in this provider:
+
+    * new-item
+    * remove-item
+    * get-item
+    * get-childitem
+	* get-content
+    * set-content
+
+DEFAULT DRIVES
+    Upon import, TxF will mount transactional versions of any valid file system
+    drives that exist in your session.  These drives will have the same name
+    as their nontransactional counterparts, prefaced with an 'X'.
+
+    For instance, the nontransactional C drive would have an equivalent
+    transactional drive named XC.
+
+EXAMPLE
+    # import the TxF module
+    > import-module txf
+
+    # move to the transactional c drive
+    > cd xc:\tmp
+    
+    # start a transaction
+    > Start-Transaction
+    
+    # create a new file inside of the transation
+    > new-item -name txfile.txt -type file -UseTransaction
+    
+    # locate the new file using the current transaction
+    > dir tx*.* -UseTransaction
+    
+    # fail to locate the new file by not using the current transaction
+    > dir tx*.*
+    
+    # commit the current transaction
+    > Complete-Transaction
+    
+    # and now the file appears in the directory
+    > dir tx*.*
+
+ISSUES
+    Please log any issues you experience with this module here:
+    
+    https://github.com/beefarino/TxF/issues
+
+SEE ALSO
+    https://github.com/beefarino/TxF
+    about_TxF_Version
+    about_TxF_License

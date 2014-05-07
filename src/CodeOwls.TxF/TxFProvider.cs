@@ -22,6 +22,11 @@ namespace CodeOwls.TxF
             var fileSystemDrives = this.SessionState.Drive.GetAllForProvider("FileSystem");
             foreach (var fileSystemDrive in fileSystemDrives)
             {
+                if (! Directory.Exists(fileSystemDrive.Root))
+                {
+                    continue;
+                }
+
                 var driveInfo = new PSDriveInfo( 
                     "X" + fileSystemDrive.Name,
                     this.ProviderInfo,
@@ -29,7 +34,7 @@ namespace CodeOwls.TxF
                     "TxF for drive " + fileSystemDrive.Name,
                     null);
 
-                var drive = new TxFDrive(driveInfo);
+                var drive = new TxFDrive(driveInfo);                
                 drives.Add(drive);
             }
             return drives;

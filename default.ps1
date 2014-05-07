@@ -90,7 +90,7 @@ task PackageModule -depends CleanModule,Build,__CreateModulePackageDirectory -de
 	# copy bins to module bin area
     mkdir $bin -force | out-null;
 	get-targetOutputPath | ls | copy-item -dest $bin -recurse -force;
-    
+
     $psd = get-content $psdFile;
     $psd -replace "ModuleVersion = '[\d\.]+'","ModuleVersion = '$version'" | out-file $psdFile;
 }

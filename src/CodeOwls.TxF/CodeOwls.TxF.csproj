@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CodeOwls.AssemblyInfo.cs">
+      <Link>Properties\CodeOwls.AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Ktm\NativeKtmMethods.cs" />
     <Compile Include="Ktm\NativeMethods.cs" />

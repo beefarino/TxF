@@ -1,0 +1,21 @@
+﻿TOPIC
+    about_TxF_Version
+
+VERSION
+    You are using version 1.1 of TxF.
+
+CHANGE LOG
+
+1.1
+  * added help topics
+  * packaged for PSGet release
+  * automatic mounting of existing file system drives on module import
+
+1.0
+  * initial release
+
+SEE ALSO
+    https://github.com/beefarino/TxF
+    about_TxF
+    about_TxF_License
+    

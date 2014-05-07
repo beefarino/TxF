@@ -28,13 +28,13 @@ Author = 'Jim Christopher'
 CompanyName = 'Code Owls LLC'
 
 # Copyright statement for this module
-Copyright = 'Copyright (c) 2013 Code Owls LLC, All Rights Reserved'
+Copyright = 'Copyright (c) 2014 Code Owls LLC, All Rights Reserved'
 
 # Description of the functionality provided by this module
 Description = 'Provides transactional file system operations.'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '2.0'
+PowerShellVersion = '3.0'
 
 # Name of the Windows PowerShell host required by this module
 PowerShellHostName = ''

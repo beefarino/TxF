@@ -39,10 +39,18 @@ namespace Microsoft.KtmIntegration
                         else
                         {
                             var fileInfo = new FileInfo(fullPath);
-                            fileInfo.CreationTime = findFileData.ftCreationTime.ToDateTime();
-                            fileInfo.LastAccessTime = findFileData.ftLastAccessTime.ToDateTime();
-                            fileInfo.LastWriteTime = findFileData.ftLastWriteTime.ToDateTime();                            
-                            
+
+                            if (fileInfo.Exists)
+                            {
+                                var creationTime = findFileData.ftCreationTime.ToDateTime();
+                                var lastAccessTime = findFileData.ftLastAccessTime.ToDateTime();
+                                var lastWriteTime = findFileData.ftLastWriteTime.ToDateTime();
+
+                                fileInfo.CreationTime = creationTime;
+                                fileInfo.LastAccessTime = lastAccessTime;
+                                fileInfo.LastWriteTime = lastWriteTime;
+                            }
+
                             files.Add(fileInfo);
                         }
                     } 
